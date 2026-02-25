@@ -1,24 +1,32 @@
 import streamlit as st
 import requests
 
-# 1. Page Setup
-st.set_page_config(page_title="Tuvalu TV Hub", layout="wide")
-import streamlit as st
-import requests
-
 st.set_page_config(layout="wide")
 
-# --- NEW SAFE WAY TO HIDE FOOTER ---
+# This block targets the footer, the header, and the "Fullscreen" button area
 st.html("""
     <style>
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        header {visibility: hidden;}
-        section[data-testid="stSidebar"] {display: none;}
-        /* This removes the extra padding at the top */
-        .block-container {padding-top: 0rem; padding-bottom: 0rem;}
+        /* 1. Hide the entire footer bar */
+        footer {visibility: hidden !important; height: 0px !important; display: none !important;}
+        
+        /* 2. Hide the top header bar (the colored line) */
+        header {visibility: hidden !important; height: 0px !important;}
+        
+        /* 3. Hide the Main Menu (hamburger) */
+        #MainMenu {visibility: hidden !important;}
+        
+        /* 4. Hide the "Fullscreen" button and the white bar it sits on */
+        .stApp [data-testid="stStatusWidget"] {visibility: hidden !important; display: none !important;}
+        
+        /* 5. Tighten up the layout so there is no gap at the bottom */
+        .block-container {padding-bottom: 0rem !important; padding-top: 1rem !important;}
+        
+        /* 6. Hide the 'Deploy' button if it's still showing */
+        .stDeployButton {display:none !important;}
     </style>
 """)
+
+# ... Your weather and TV code continues here ...
 
 # ... rest of your weather and TV code ...
 
