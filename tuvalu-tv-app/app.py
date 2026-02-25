@@ -46,34 +46,17 @@ def get_weather():
 
 w = get_weather()
 
-# 4. MAIN DASHBOARD LAYOUT
-# col1 (Left) = Weather | col2 (Right) = TV & Guide
-col1, col2 = st.columns([1, 2.3], gap="large")
+# --- MAIN DASHBOARD LAYOUT ---
+# Changing [1, 2.3] to [1.5, 2] makes the weather widget (col1) significantly wider
+col1, col2 = st.columns([1.5, 2], gap="large")
 
 with col1:
-    # --- WEATHER CARD (Dark Theme to match your screenshot) ---
+    # --- WEATHER CARD ---
+    # The width of this card will now automatically expand to fill the wider column
     st.html(f"""
-    <div style="background: #111827; border-radius: 24px; padding: 30px; color: white; border: 1px solid #1f2937; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);">
+    <div style="background: #111827; border-radius: 24px; padding: 30px; color: white; border: 1px solid #1f2937; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); width: 100%;">
         <p style="color: #9ca3af; margin:0; font-size: 0.8rem; letter-spacing: 1px; font-weight: 600;">LIVE WEATHER</p>
-        <p style="color: #4b5563; margin:0; font-size: 0.75rem;">Funafuti, Tuvalu</p>
-        
-        <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
-            <h1 style="font-size: 4rem; margin:0; font-weight: 800; letter-spacing: -2px;">{w['temp']}°C</h1>
-            <img src="http://openweathermap.org/img/wn/{w['icon']}@4x.png" width="80">
-        </div>
-        
-        <p style="color: #38bdf8; font-weight: 600; margin-bottom: 25px; text-transform: uppercase; font-size: 0.9rem;">{w['cond']}</p>
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div style="background: #1f2937; padding: 15px; border-radius: 16px; text-align: center;">
-                <small style="color: #6b7280; font-size: 0.6rem; text-transform: uppercase; display: block; margin-bottom: 4px;">Humidity</small>
-                <span style="font-weight: 700; font-size: 1.1rem;">{w['hum']}%</span>
-            </div>
-            <div style="background: #1f2937; padding: 15px; border-radius: 16px; text-align: center;">
-                <small style="color: #6b7280; font-size: 0.6rem; text-transform: uppercase; display: block; margin-bottom: 4px;">Wind</small>
-                <span style="font-weight: 700; font-size: 1.1rem;">{w['wind']} <small style="font-size: 0.7rem;">km/h</small></span>
-            </div>
-        </div>
+        ...
     </div>
     """)
 
