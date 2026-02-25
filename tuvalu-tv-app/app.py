@@ -63,7 +63,7 @@ with col1:
 with col2:
     st.markdown("### 🇹🇻 Tuvalu TV Live")
     # THE TV PLAYER
-    st.components.v1.iframe("https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/watch/?v=1AfPd5mmTs", height=400)
+    #st.components.v1.iframe("https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/watch/?v=1AfPd5mmTs", height=400)
     
     st.markdown("### 📅 Program Guide")
     # THE EPG
