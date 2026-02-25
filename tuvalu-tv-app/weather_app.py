@@ -1,89 +1,104 @@
 import streamlit as st
 import requests
 
-st.set_page_config(page_title="Tuvalu Weather", layout="centered")
+st.set_page_config(page_title="Tuvalu Weather Station", layout="centered")
 
-# --- 1. DATA FETCHING FROM OPENWEATHER ---
 def get_weather():
-    # This pulls the key safely from your Streamlit Secrets
     api_key = st.secrets["OPENWEATHER_API_KEY"]
+    # We use Funafuti's coordinates for better accuracy with Alerts
+    lat, lon = -8.5211, 179.1962 
     
-    # We use "Funafuti,TV" (TV is the country code for Tuvalu)
-    city = "Funafuti,TV"
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
+    # Using the One Call 3.0 URL (Requires subscription on OWM site)
+    url = f"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={api_key}&units=metric"
     
     try:
         response = requests.get(url)
         data = response.json()
         
-        # Check if the API call was successful (200 is OK)
-        if response.status_code == 200:
-            return {
-                "temp": round(data['main']['temp']),
-                "humidity": data['main']['humidity'],
-                "wind": round(data['wind']['speed'] * 3.6, 1), # Converting m/s to km/h
-                "cond": data['weather'][0]['main'],
-                "icon": data['weather'][0]['icon']
-            }
-        else:
-            return None
+        # Visibility is in meters, we convert to KM
+        vis_km = data['current'].get('visibility', 0) / 1000
+        
+        # Alerts is a list; we grab the first one if it exists
+        alert_msg = "No Active Alerts"
+        alert_style = "color: #10b981;" # Green
+        
+        if 'alerts' in data:
+            alert_msg = data['alerts'][0]['event']
+            alert_style = "color: #ef4444; font-weight: bold; animation: blinker 1.5s linear infinite;" # Red + Blinking
+
+        return {
+            "temp": round(data['current']['temp']),
+            "humidity": data['current']['humidity'],
+            "wind": round(data['current']['wind_speed'] * 3.6, 1),
+            "vis": vis_km,
+            "cond": data['current']['weather'][0]['main'],
+            "icon": data['current']['weather'][0]['icon'],
+            "alert": alert_msg,
+            "alert_style": alert_style
+        }
     except:
         return None
 
-# Fetch the data
 w = get_weather()
 
-# --- 2. DISPLAY LOGIC ---
 if w:
     st.html(f"""
     <style>
+        @keyframes blinker {{ 50% {{ opacity: 0; }} }}
         .weather-card {{
             background: linear-gradient(145deg, #1e293b, #0f172a);
             border-radius: 24px;
-            padding: 40px;
+            padding: 30px;
             color: white;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Inter', sans-serif;
             border: 1px solid #334155;
             max-width: 450px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
         }}
-        .temp-val {{ font-size: 5rem; font-weight: 800; margin: 0; line-height: 1; }}
-        .loc-name {{ font-size: 1.5rem; color: #94a3b8; margin-bottom: 5px; }}
-        .stat-grid {{ 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 20px; 
-            margin-top: 30px; 
-        }}
-        .stat-box {{ 
-            background: rgba(255, 255, 255, 0.05); 
-            padding: 15px; 
-            border-radius: 15px; 
+        .temp-val {{ font-size: 5rem; font-weight: 800; margin: 0; }}
+        .stat-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }}
+        .stat-box {{ background: rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; text-align: center; }}
+        .alert-box {{ 
+            margin-top: 20px; 
+            padding: 10px; 
+            background: rgba(0,0,0,0.3); 
+            border-radius: 10px; 
             text-align: center; 
+            border: 1px solid #334155;
         }}
     </style>
 
     <div class="weather-card">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
-                <p class="loc-name">Funafuti, Tuvalu</p>
+                <p style="color: #94a3b8; margin:0;">Funafuti, Tuvalu</p>
                 <h1 class="temp-val">{w['temp']}°C</h1>
-                <p style="color: #38bdf8; font-weight: 600; margin-top: 10px;">{w['cond']}</p>
+                <p style="color: #38bdf8; font-weight: 600;">{w['cond']}</p>
             </div>
             <img src="http://openweathermap.org/img/wn/{w['icon']}@4x.png" width="100">
         </div>
         
         <div class="stat-grid">
             <div class="stat-box">
-                <small style="color: #64748b; text-transform: uppercase;">Humidity</small><br>
-                <span style="font-size: 1.2rem; font-weight: 600;">{w['humidity']}%</span>
+                <small style="color: #64748b;">HUMIDITY</small><br>
+                <span>{w['humidity']}%</span>
             </div>
             <div class="stat-box">
-                <small style="color: #64748b; text-transform: uppercase;">Wind</small><br>
-                <span style="font-size: 1.2rem; font-weight: 600;">{w['wind']} km/h</span>
+                <small style="color: #64748b;">WIND</small><br>
+                <span>{w['wind']} km/h</span>
             </div>
+            <div class="stat-box">
+                <small style="color: #64748b;">VISIBILITY</small><br>
+                <span>{w['vis']} km</span>
+            </div>
+            <div class="stat-box">
+                <small style="color: #64748b;">UV INDEX</small><br>
+                <span>High</span>
+            </div>
+        </div>
+
+        <div class="alert-box">
+            <small style="color: #64748b;">OFFICIAL ALERTS</small><br>
+            <span style="{w['alert_style']}">{w['alert']}</span>
         </div>
     </div>
     """)
-else:
-    st.error("Wait a moment! The weather data is currently refreshing or your API key is still activating.")
