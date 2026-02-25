@@ -1,34 +1,18 @@
 import streamlit as st
-import requests
 
 st.set_page_config(layout="wide")
 
-# --- THE NUCLEAR OPTION CSS ---
+# This hides the internal elements so they don't peek through while loading
 st.html("""
     <style>
-        /* 1. Hide the entire footer and toolbar wrapper */
+        #MainMenu {visibility: hidden !important;}
         footer {display: none !important;}
-        [data-testid="stHeader"] {display: none !important;}
+        header {visibility: hidden !important;}
         [data-testid="stStatusWidget"] {display: none !important;}
-        [data-testid="stToolbar"] {display: none !important;}
-        
-        /* 2. Remove the white bar and Fullscreen icon area */
-        div[class^="st-emotion-cache-18ni73i"] {display: none !important;}
-        div[data-testid="stDecoration"] {display: none !important;}
-        
-        /* 3. Force the app to use the full height and remove bottom gaps */
-        .main .block-container {
-            padding-top: 0rem !important;
-            padding-bottom: 0rem !important;
-            min-height: 100vh !important;
-        }
-        
-        /* 4. Hide the footer text specifically */
-        .stApp [data-testid="stFooter"] {display: none !important;}
+        .block-container {padding-top: 0rem !important; padding-bottom: 0rem !important;}
+        .stApp {background-color: #0f172a;}
     </style>
 """)
-
-# ... your weather and TV code ...
 
 # 2. Weather Fetching Logic (Keep this in the main app for speed)
 def get_weather():
