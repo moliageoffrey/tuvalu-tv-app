@@ -4,43 +4,56 @@ import requests
 st.set_page_config(page_title="Tuvalu Weather Station", layout="centered")
 
 def get_weather():
-    api_key = st.secrets["OPENWEATHER_API_KEY"]
-    # We use Funafuti's coordinates for better accuracy with Alerts
-    lat, lon = -8.5211, 179.1962 
-    
-    # Using the One Call 3.0 URL (Requires subscription on OWM site)
-    url = f"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={api_key}&units=metric"
+    # Safely get your key from Streamlit Secrets
+    try:
+        api_key = st.secrets["OPENWEATHER_API_KEY"]
+    except:
+        st.error("API Key not found in Secrets!")
+        return None
+        
+    # Using the standard FREE 2.5 API (Most reliable for new accounts)
+    city = "Funafuti,TV"
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
     
     try:
         response = requests.get(url)
         data = response.json()
         
-        # Visibility is in meters, we convert to KM
-        vis_km = data['current'].get('visibility', 0) / 1000
-        
-        # Alerts is a list; we grab the first one if it exists
-        alert_msg = "No Active Alerts"
-        alert_style = "color: #10b981;" # Green
-        
-        if 'alerts' in data:
-            alert_msg = data['alerts'][0]['event']
-            alert_style = "color: #ef4444; font-weight: bold; animation: blinker 1.5s linear infinite;" # Red + Blinking
+        if response.status_code == 200:
+            # Visibility is in meters, convert to KM
+            vis_km = data.get('visibility', 0) / 1000
+            wind_speed = round(data['wind']['speed'] * 3.6, 1) # km/h
+            
+            # --- SMART ALERT LOGIC ---
+            # Since the free API doesn't give text alerts, we create them based on conditions
+            alert_msg = "Conditions: Normal"
+            alert_style = "color: #10b981;" # Green
+            
+            if wind_speed > 40:
+                alert_msg = "⚠️ High Wind Warning"
+                alert_style = "color: #ef4444; font-weight: bold; animation: blinker 1.5s linear infinite;"
+            elif vis_km < 2:
+                alert_msg = "⚠️ Low Visibility / Heavy Rain"
+                alert_style = "color: #f59e0b; font-weight: bold;"
 
-        return {
-            "temp": round(data['current']['temp']),
-            "humidity": data['current']['humidity'],
-            "wind": round(data['current']['wind_speed'] * 3.6, 1),
-            "vis": vis_km,
-            "cond": data['current']['weather'][0]['main'],
-            "icon": data['current']['weather'][0]['icon'],
-            "alert": alert_msg,
-            "alert_style": alert_style
-        }
-    except:
+            return {
+                "temp": round(data['main']['temp']),
+                "humidity": data['main']['humidity'],
+                "wind": wind_speed,
+                "vis": vis_km,
+                "cond": data['weather'][0]['main'],
+                "icon": data['weather'][0]['icon'],
+                "alert": alert_msg,
+                "alert_style": alert_style
+            }
+    except Exception as e:
+        st.write(f"Connection Error: {e}")
         return None
+    return None
 
 w = get_weather()
 
+# If the data exists, show the card. If not, show a helpful message.
 if w:
     st.html(f"""
     <style>
@@ -53,6 +66,7 @@ if w:
             font-family: 'Inter', sans-serif;
             border: 1px solid #334155;
             max-width: 450px;
+            margin: auto;
         }}
         .temp-val {{ font-size: 5rem; font-weight: 800; margin: 0; }}
         .stat-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }}
@@ -72,33 +86,4 @@ if w:
             <div>
                 <p style="color: #94a3b8; margin:0;">Funafuti, Tuvalu</p>
                 <h1 class="temp-val">{w['temp']}°C</h1>
-                <p style="color: #38bdf8; font-weight: 600;">{w['cond']}</p>
-            </div>
-            <img src="http://openweathermap.org/img/wn/{w['icon']}@4x.png" width="100">
-        </div>
-        
-        <div class="stat-grid">
-            <div class="stat-box">
-                <small style="color: #64748b;">HUMIDITY</small><br>
-                <span>{w['humidity']}%</span>
-            </div>
-            <div class="stat-box">
-                <small style="color: #64748b;">WIND</small><br>
-                <span>{w['wind']} km/h</span>
-            </div>
-            <div class="stat-box">
-                <small style="color: #64748b;">VISIBILITY</small><br>
-                <span>{w['vis']} km</span>
-            </div>
-            <div class="stat-box">
-                <small style="color: #64748b;">UV INDEX</small><br>
-                <span>High</span>
-            </div>
-        </div>
-
-        <div class="alert-box">
-            <small style="color: #64748b;">OFFICIAL ALERTS</small><br>
-            <span style="{w['alert_style']}">{w['alert']}</span>
-        </div>
-    </div>
-    """)
+                <p style="color: #38bdf8; font-weight:
