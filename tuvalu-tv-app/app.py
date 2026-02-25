@@ -15,9 +15,9 @@ fb_embed_link = "https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fw
 page_plugin = "https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FTuvaluBroadcastingCorporation&tabs=timeline&width=500&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
 
 # Try the video first:
-st.components.v1.iframe(f"https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/watch/?v=1AfPd5mmTs", height=500)
-
-st.divider()
+st.subheader("Latest from Tuvalu TV")
+# This shows the actual Facebook Page Feed
+st.components.v1.iframe("https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FTuvaluBroadcastingCorporation&tabs=timeline&width=500&height=500", height=500)
 
 st.subheader("Program Guide")
 st.components.v1.iframe("https://pasifikatv.co.nz/schedule/", height=800, scrolling=True)
