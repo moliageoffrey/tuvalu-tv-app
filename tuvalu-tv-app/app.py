@@ -10,8 +10,7 @@ st.subheader("Now Playing: Tuvalu TV")
 
 # This link is a beautiful 4K drone view of Tuvalu to use as a live background
 # until you have a specific broadcast link.
-st.subheader("Facebook Live Feed")
-st.components.v1.iframe("https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/TuvaluBroadcastingCorporation/live", height=500)
+st.video("https://www.youtube.com/watch?v=sc8_K7_XzYI")
 
 st.divider()
 
