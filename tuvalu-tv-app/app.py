@@ -5,12 +5,14 @@ st.set_page_config(page_title="Tuvalu TV Live", layout="wide")
 
 st.title("🇹🇻 Tuvalu TV - Live Stream & Schedule")
 
-# Video Player
-st.subheader("Now Playing: Tuvalu TV")
+# Video Player Section
+st.subheader("Featured Broadcast")
 
-# This link is a beautiful 4K drone view of Tuvalu to use as a live background
-# until you have a specific broadcast link.
-st.video("https://www.youtube.com/watch?v=sc8_K7_XzYI")
+# This is the "Magic" link format for Facebook embeds
+fb_video_url = "https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/watch/?v=1AfPd5mmTs&show_text=0&width=560"
+
+# We use an iframe to ensure the Facebook player loads correctly
+st.components.v1.iframe(fb_video_url, height=500, scrolling=False)
 
 st.divider()
 
