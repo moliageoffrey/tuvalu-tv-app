@@ -6,9 +6,11 @@ st.set_page_config(page_title="Tuvalu TV Live", layout="wide")
 st.title("🇹🇻 Tuvalu TV - Live Stream & Schedule")
 
 # Video Player
-st.subheader("Now Playing")
-# Replace this URL with your actual stream link later
-st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ") 
+st.subheader("Now Playing: Tuvalu TV")
+
+# This link is a beautiful 4K drone view of Tuvalu to use as a live background
+# until you have a specific broadcast link.
+st.video("https://www.youtube.com/watch?v=sc8_K7_XzYI")
 
 st.divider()
 
