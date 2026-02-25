@@ -3,6 +3,15 @@ import requests
 
 # 1. Page Setup
 st.set_page_config(page_title="Tuvalu TV Hub", layout="wide")
+# Hide the Streamlit footer and the 'Made with Streamlit' menu
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_html=True)
 
 # 2. Weather Fetching Logic (Keep this in the main app for speed)
 def get_weather():
