@@ -3,32 +3,32 @@ import requests
 
 st.set_page_config(layout="wide")
 
-# This block targets the footer, the header, and the "Fullscreen" button area
+# --- THE NUCLEAR OPTION CSS ---
 st.html("""
     <style>
-        /* 1. Hide the entire footer bar */
-        footer {visibility: hidden !important; height: 0px !important; display: none !important;}
+        /* 1. Hide the entire footer and toolbar wrapper */
+        footer {display: none !important;}
+        [data-testid="stHeader"] {display: none !important;}
+        [data-testid="stStatusWidget"] {display: none !important;}
+        [data-testid="stToolbar"] {display: none !important;}
         
-        /* 2. Hide the top header bar (the colored line) */
-        header {visibility: hidden !important; height: 0px !important;}
+        /* 2. Remove the white bar and Fullscreen icon area */
+        div[class^="st-emotion-cache-18ni73i"] {display: none !important;}
+        div[data-testid="stDecoration"] {display: none !important;}
         
-        /* 3. Hide the Main Menu (hamburger) */
-        #MainMenu {visibility: hidden !important;}
+        /* 3. Force the app to use the full height and remove bottom gaps */
+        .main .block-container {
+            padding-top: 0rem !important;
+            padding-bottom: 0rem !important;
+            min-height: 100vh !important;
+        }
         
-        /* 4. Hide the "Fullscreen" button and the white bar it sits on */
-        .stApp [data-testid="stStatusWidget"] {visibility: hidden !important; display: none !important;}
-        
-        /* 5. Tighten up the layout so there is no gap at the bottom */
-        .block-container {padding-bottom: 0rem !important; padding-top: 1rem !important;}
-        
-        /* 6. Hide the 'Deploy' button if it's still showing */
-        .stDeployButton {display:none !important;}
+        /* 4. Hide the footer text specifically */
+        .stApp [data-testid="stFooter"] {display: none !important;}
     </style>
 """)
 
-# ... Your weather and TV code continues here ...
-
-# ... rest of your weather and TV code ...
+# ... your weather and TV code ...
 
 # 2. Weather Fetching Logic (Keep this in the main app for speed)
 def get_weather():
