@@ -78,5 +78,5 @@ with col2:
     
     st.divider()
     
-    st.markdown("### 🇹🇻 Tuvalu TV Live")
-    st.components.v1.iframe("https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/watch/?v=1AfPd5mmTs", height=450)
+   # st.markdown("### 🇹🇻 Tuvalu TV Live")
+   # st.components.v1.iframe("https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/watch/?v=1AfPd5mmTs", height=450)
