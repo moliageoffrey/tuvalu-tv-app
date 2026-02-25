@@ -4,30 +4,25 @@ import requests
 # 1. PAGE CONFIGURATION
 st.set_page_config(page_title="Tuvalu TV Hub", layout="wide")
 
-# 2. THE "CLEAN LOOK" CSS (No Footer, No Header, Balanced Spacing)
+# 2. THE "CLEAN LOOK" CSS
 st.html("""
     <style>
-        /* Hide all Streamlit branding and UI elements */
+        /* Hide all Streamlit branding */
         footer {display: none !important;}
         [data-testid="stHeader"] {display: none !important;}
         [data-testid="stStatusWidget"] {display: none !important;}
         [data-testid="stToolbar"] {display: none !important;}
         
-        /* Set background and tighten the top spacing to match your screenshot */
+        /* Set background and tighten top spacing */
         .stApp {background-color: #0f172a;}
-        .block-container {padding-top: 2rem !important; padding-bottom: 0rem !important;}
+        .block-container {padding-top: 1rem !important; padding-bottom: 0rem !important;}
         
-        /* Smooth styling for frames */
+        /* Make the frames look modern */
         iframe {border-radius: 15px;}
-        
-        /* Custom scrollbar for a more premium feel */
-        ::-webkit-scrollbar {width: 8px;}
-        ::-webkit-scrollbar-track {background: #0f172a;}
-        ::-webkit-scrollbar-thumb {background: #1f2937; border-radius: 10px;}
     </style>
 """)
 
-# 3. WEATHER FETCHING FUNCTION (Standard 2.5 API)
+# 3. WEATHER FETCHING FUNCTION
 def get_weather():
     try:
         api_key = st.secrets["OPENWEATHER_API_KEY"]
@@ -41,35 +36,47 @@ def get_weather():
             "icon": data['weather'][0]['icon']
         }
     except:
-        # Static Fallback for stability
-        return {"temp": 28, "hum": 80, "wind": 12, "cond": "Cloudy", "icon": "03d"}
+        return {"temp": 28, "hum": 80, "wind": 12, "cond": "Clear", "icon": "01d"}
 
 w = get_weather()
 
-# --- MAIN DASHBOARD LAYOUT ---
-# Changing [1, 2.3] to [1.5, 2] makes the weather widget (col1) significantly wider
+# 4. MAIN DASHBOARD LAYOUT
+# I increased the first number (1.5) to make the weather column wider
 col1, col2 = st.columns([1.5, 2], gap="large")
 
 with col1:
     # --- WEATHER CARD ---
-    # The width of this card will now automatically expand to fill the wider column
     st.html(f"""
-    <div style="background: #111827; border-radius: 24px; padding: 30px; color: white; border: 1px solid #1f2937; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); width: 100%;">
+    <div style="background: #111827; border-radius: 24px; padding: 30px; color: white; border: 1px solid #1f2937; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);">
         <p style="color: #9ca3af; margin:0; font-size: 0.8rem; letter-spacing: 1px; font-weight: 600;">LIVE WEATHER</p>
-        ...
+        <p style="color: #4b5563; margin:0; font-size: 0.75rem;">Funafuti, Tuvalu</p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+            <h1 style="font-size: 4rem; margin:0; font-weight: 800; letter-spacing: -2px;">{w['temp']}°C</h1>
+            <img src="http://openweathermap.org/img/wn/{w['icon']}@4x.png" width="80">
+        </div>
+        
+        <p style="color: #38bdf8; font-weight: 600; margin-bottom: 25px; text-transform: uppercase; font-size: 0.9rem;">{w['cond']}</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div style="background: #1f2937; padding: 15px; border-radius: 16px; text-align: center;">
+                <small style="color: #6b7280; font-size: 0.6rem; text-transform: uppercase; display: block; margin-bottom: 4px;">Humidity</small>
+                <span style="font-weight: 700; font-size: 1.1rem;">{w['hum']}%</span>
+            </div>
+            <div style="background: #1f2937; padding: 15px; border-radius: 16px; text-align: center;">
+                <small style="color: #6b7280; font-size: 0.6rem; text-transform: uppercase; display: block; margin-bottom: 4px;">Wind</small>
+                <span style="font-weight: 700; font-size: 1.1rem;">{w['wind']} <small style="font-size: 0.7rem;">km/h</small></span>
+            </div>
+        </div>
     </div>
     """)
 
 with col2:
     # --- TV & PROGRAM GUIDE SECTION ---
     st.markdown("### 📅 Program Guide")
-    
-    # Pasifika TV Schedule
     st.components.v1.iframe("https://pasifikatv.co.nz/schedule/", height=600, scrolling=True)
     
     st.divider()
     
-    # TV Player Header
     st.markdown("### 🇹🇻 Tuvalu TV Live")
-    # Facebook Video Player
     st.components.v1.iframe("https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/watch/?v=1AfPd5mmTs", height=450)
