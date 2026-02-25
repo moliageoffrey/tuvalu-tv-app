@@ -1,18 +1,4 @@
-import streamlit as st
-
-st.set_page_config(layout="wide")
-
-# This hides the internal elements so they don't peek through while loading
-st.html("""
-    <style>
-        #MainMenu {visibility: hidden !important;}
-        footer {display: none !important;}
-        header {visibility: hidden !important;}
-        [data-testid="stStatusWidget"] {display: none !important;}
-        .block-container {padding-top: 0rem !important; padding-bottom: 0rem !important;}
-        .stApp {background-color: #0f172a;}
-    </style>
-""")
+News Ticker
 
 # 2. Weather Fetching Logic (Keep this in the main app for speed)
 def get_weather():
