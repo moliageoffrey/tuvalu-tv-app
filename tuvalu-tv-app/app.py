@@ -3,15 +3,24 @@ import requests
 
 # 1. Page Setup
 st.set_page_config(page_title="Tuvalu TV Hub", layout="wide")
-# Hide the Streamlit footer and the 'Made with Streamlit' menu
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_html=True)
+import streamlit as st
+import requests
+
+st.set_page_config(layout="wide")
+
+# --- NEW SAFE WAY TO HIDE FOOTER ---
+st.html("""
+    <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        header {visibility: hidden;}
+        section[data-testid="stSidebar"] {display: none;}
+        /* This removes the extra padding at the top */
+        .block-container {padding-top: 0rem; padding-bottom: 0rem;}
+    </style>
+""")
+
+# ... rest of your weather and TV code ...
 
 # 2. Weather Fetching Logic (Keep this in the main app for speed)
 def get_weather():
