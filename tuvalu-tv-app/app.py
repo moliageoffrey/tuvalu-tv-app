@@ -46,35 +46,40 @@ w = get_weather()
 col1, col2 = st.columns([1.2, 2], gap="large")
 
 with col1:
-    # Defining the HTML string
-    weather_html = f"""
-    <div style="background: #111827; border-radius: 24px; padding: 30px; color: white; border: 1px solid #1f2937; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);">
-        <p style="color: #9ca3af; margin:0; font-size: 0.8rem; letter-spacing: 1px; font-weight: 600; text-transform: uppercase;">Live Weather</p>
+    # 1. Create the weather display string
+    # We use a clean f-string here
+    weather_display = f"""
+    <div style="background: #111827; border-radius: 24px; padding: 30px; color: white; border: 1px solid #1f2937;">
+        <p style="color: #9ca3af; margin:0; font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">Live Weather</p>
         <p style="color: #4b5563; margin:0; font-size: 0.75rem;">Funafuti, Tuvalu</p>
         
         <div style="display: flex; justify-content: space-between; align-items: center; margin: 25px 0;">
-            <h1 style="font-size: 3.8rem; margin:0; font-weight: 800; letter-spacing: -2px; color: white;">{w['temp']}°C</h1>
-            <img src="http://openweathermap.org/img/wn/{w['icon']}@4x.png" width="90">
+            <h1 style="font-size: 3.5rem; margin:0; font-weight: 800; color: white;">{w['temp']}°C</h1>
+            <img src="http://openweathermap.org/img/wn/{w['icon']}@4x.png" width="80">
         </div>
         
-        <p style="color: #38bdf8; font-weight: 600; margin-bottom: 25px; text-transform: capitalize; font-size: 1.1rem;">{w['cond']}</p>
+        <p style="color: #38bdf8; font-weight: 600; text-transform: capitalize; font-size: 1.1rem;">{w['cond']}</p>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div style="background: #1f2937; padding: 15px; border-radius: 16px; text-align: center; border: 1px solid #374151;">
-                <small style="color: #9ca3af; font-size: 0.65rem; text-transform: uppercase; display: block; margin-bottom: 4px;">Humidity</small>
-                <span style="font-weight: 700; font-size: 1.2rem; color: white;">{w['hum']}%</span>
+            <div style="background: #1f2937; padding: 15px; border-radius: 16px; text-align: center;">
+                <small style="color: #9ca3af; font-size: 0.65rem; display: block;">HUMIDITY</small>
+                <span style="font-weight: 700; font-size: 1.2rem;">{w['hum']}%</span>
             </div>
-            <div style="background: #1f2937; padding: 15px; border-radius: 16px; text-align: center; border: 1px solid #374151;">
-                <small style="color: #9ca3af; font-size: 0.65rem; text-transform: uppercase; display: block; margin-bottom: 4px;">Wind</small>
-                <span style="font-weight: 700; font-size: 1.2rem; color: white;">{w['wind']} km/h</span>
+            <div style="background: #1f2937; padding: 15px; border-radius: 16px; text-align: center;">
+                <small style="color: #9ca3af; font-size: 0.65rem; display: block;">WIND</small>
+                <span style="font-weight: 700; font-size: 1.2rem;">{w['wind']} <small style="font-size: 0.7rem;">km/h</small></span>
             </div>
         </div>
         
         <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #1f2937; text-align: center;">
-             <a href="https://www.ttv.sb/live-stream/" target="_blank" style="text-decoration: none; background: #ef4444; color: white; padding: 12px 24px; border-radius: 12px; font-weight: bold; font-size: 0.9rem; display: inline-block;">🔴 WATCH TTV LIVE</a>
+             <a href="https://www.ttv.sb/live-stream/" target="_blank" style="text-decoration: none; background: #ef4444; color: white; padding: 12px 24px; border-radius: 12px; font-weight: bold; display: inline-block;">🔴 WATCH TTV LIVE</a>
         </div>
     </div>
     """
+    
+    # 2. Render the HTML 
+    # Ensure this line is indented exactly the same as 'weather_display' above
+    st.markdown(weather_display, unsafe_allow_html=True)
     # Rendering the HTML
     st.markdown(weather_html, unsafe_allow_html=True)
 
