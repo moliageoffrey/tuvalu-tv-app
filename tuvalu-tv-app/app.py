@@ -46,9 +46,9 @@ w = get_weather()
 col1, col2 = st.columns([1.2, 2], gap="large")
 
 with col1:
-    # --- WEATHER CARD ---
-    weather_display = f"""
-    <div style="background: #111827; border-radius: 24px; padding: 30px; color: white; border: 1px solid #1f2937; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);">
+    # 1. We put the HTML in a variable exactly like before
+    weather_card = f"""
+    <div style="background: #111827; border-radius: 24px; padding: 30px; color: white; border: 1px solid #1f2937; font-family: sans-serif;">
         <p style="color: #9ca3af; margin:0; font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">Live Weather</p>
         <p style="color: #4b5563; margin:0; font-size: 0.75rem;">Funafuti, Tuvalu</p>
         
@@ -76,8 +76,9 @@ with col1:
     </div>
     """
     
-    # Ensure this line is NOT indented further than the 'weather_display' variable above
-    st.markdown(weather_display, unsafe_allow_html=True)
+    # 2. FIX: Use st.components.v1.html instead of st.markdown
+    # This forces the browser to render it as a real website element
+    st.components.v1.html(weather_card, height=450)
 
 with col2:
     # --- TV GUIDE SECTION ---
