@@ -98,6 +98,10 @@ with col1:
         </div>
     </div>
     """
+with col1:
+    # ... (all your weather_card HTML code is here) ...
+    
+    # THE FIX IS RIGHT HERE:
     st.markdown(weather_card, unsafe_allow_html=True)
 
 with col2:
