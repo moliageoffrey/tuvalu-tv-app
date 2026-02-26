@@ -77,11 +77,8 @@ with col1:
     </div>
     """
     
-    # 2. Render the HTML 
-    # Ensure this line is indented exactly the same as 'weather_display' above
+# 2. Render the HTML 
     st.markdown(weather_display, unsafe_allow_html=True)
-    # Rendering the HTML
-    st.markdown(weather_html, unsafe_allow_html=True)
 
 with col2:
     st.markdown("<h3 style='color: white; margin-top: 0; font-family: sans-serif;'>📅 Solomon TTV Program Guide</h3>", unsafe_allow_html=True)
