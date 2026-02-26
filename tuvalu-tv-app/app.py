@@ -46,9 +46,9 @@ w = get_weather()
 col1, col2 = st.columns([1.2, 2], gap="large")
 
 with col1:
-    # 1. Define the HTML as a variable
+    # --- WEATHER CARD ---
     weather_display = f"""
-    <div style="background: #111827; border-radius: 24px; padding: 30px; color: white; border: 1px solid #1f2937;">
+    <div style="background: #111827; border-radius: 24px; padding: 30px; color: white; border: 1px solid #1f2937; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);">
         <p style="color: #9ca3af; margin:0; font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">Live Weather</p>
         <p style="color: #4b5563; margin:0; font-size: 0.75rem;">Funafuti, Tuvalu</p>
         
@@ -75,13 +75,20 @@ with col1:
         </div>
     </div>
     """
-    
-    # 2. This is the command that turns the code into the visual card
-    st.markdown(weather_display, unsafe_allow_html=True)
-    
-    # 2. Render the HTML 
     st.markdown(weather_display, unsafe_allow_html=True)
 
 with col2:
+    # --- TV GUIDE SECTION ---
     st.markdown("<h3 style='color: white; margin-top: 0; font-family: sans-serif;'>📅 Solomon TTV Program Guide</h3>", unsafe_allow_html=True)
-    st.components.v1.iframe("https://www.ttv.sb/tv-guide/", height=750, scrolling=True)
+    
+    # Safari-safe iframe method
+    st.components.v1.html(f"""
+        <iframe 
+            src="https://www.ttv.sb/tv-guide/" 
+            width="100%" 
+            height="700px" 
+            style="border: 1px solid #1f2937; border-radius: 15px; background: white;"
+            sandbox="allow-scripts allow-same-origin allow-forms"
+            loading="lazy">
+        </iframe>
+    """, height=720)
