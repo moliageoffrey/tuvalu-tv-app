@@ -75,6 +75,7 @@ with col1:
         </div>
     </div>
     """
+    
     # Ensure this line is NOT indented further than the 'weather_display' variable above
     st.markdown(weather_display, unsafe_allow_html=True)
 
