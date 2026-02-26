@@ -47,7 +47,6 @@ col1, col2 = st.columns([1.2, 2], gap="large")
 
 with col1:
     # 1. Create the weather display string
-    # We use a clean f-string here
     weather_display = f"""
     <div style="background: #111827; border-radius: 24px; padding: 30px; color: white; border: 1px solid #1f2937;">
         <p style="color: #9ca3af; margin:0; font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">Live Weather</p>
@@ -77,7 +76,8 @@ with col1:
     </div>
     """
     
-st.markdown(weather_display, unsafe_allow_html=True)
+    # 2. Render the HTML 
+    st.markdown(weather_display, unsafe_allow_html=True)
 
 with col2:
     st.markdown("<h3 style='color: white; margin-top: 0; font-family: sans-serif;'>📅 Solomon TTV Program Guide</h3>", unsafe_allow_html=True)
