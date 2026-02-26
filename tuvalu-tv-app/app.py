@@ -74,7 +74,7 @@ with col1:
 with col2:
     # --- TV & PROGRAM GUIDE SECTION ---
     st.markdown("### 📅 Program Guide")
-    st.components.v1.iframe("https://pasifikatv.co.nz/schedule/", height=600, scrolling=True)
+    st.components.v1.iframe("https://www.ttv.sb/live-stream/", height=600, scrolling=True)
     
     st.divider()
     
