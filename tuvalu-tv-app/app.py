@@ -50,7 +50,7 @@ with col1:
     weather_card = f"""
     <div style="
         background: linear-gradient(145deg, #111827, #1e293b); 
-        border-radius: 28px; 
+        border-radius: 15px; 
         padding: 30px; 
         color: white; 
         border: 1px solid #334155; 
